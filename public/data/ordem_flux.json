@@ -1,0 +1,6 @@
+[
+  { "altitude_km": 400, "flux": 0.002, "risk_level": "low" },
+  { "altitude_km": 550, "flux": 0.012, "risk_level": "medium" },
+  { "altitude_km": 750, "flux": 0.028, "risk_level": "high" },
+  { "altitude_km": 900, "flux": 0.034, "risk_level": "critical" }
+]

@@ -1,0 +1,54 @@
+.collision-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1.5rem;
+  color: white;
+  padding: 2rem;
+}
+
+.collision-3d {
+  width: 65%;
+  height: 70vh;
+  border-radius: 2rem;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.collision-panel {
+  width: 30%;
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  padding: 1.5rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.collision-panel h3 {
+  color: #00f7ff;
+  font-family: "Orbitron", sans-serif;
+  margin-bottom: 1rem;
+}
+
+.alerts .alert {
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.alert.high {
+  background: rgba(255, 80, 80, 0.2);
+  border: 1px solid #ff5050;
+}
+
+.alert.medium {
+  background: rgba(255, 200, 0, 0.15);
+  border: 1px solid #ffcc00;
+}
+
+.alert.low {
+  background: rgba(0, 255, 150, 0.15);
+  border: 1px solid #00ff99;
+}
