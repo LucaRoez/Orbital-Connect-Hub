@@ -1,52 +1,68 @@
-.collision-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 1.5rem;
-  color: white;
-  padding: 2rem;
+/* layout general de la página de colisiones */
+.collision-page {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 18px;
+  align-items: stretch;
 }
 
-.collision-3d {
-  width: 65%;
-  height: 70vh;
-  border-radius: 2rem;
-  overflow: hidden;
+.collision-canvas {
+  height: 520px;            /* ajusta si lo necesitas */
+  border-radius: 18px;
+  padding: 6px;
+  background: radial-gradient(120% 120% at 50% 50%, rgba(25,255,255,0.06), rgba(0,0,0,0.15));
+  box-shadow: 0 0 0 1px rgba(60,210,255,0.2), inset 0 0 30px rgba(0,255,255,0.08);
 }
 
+/* panel lateral */
 .collision-panel {
-  width: 30%;
-  background: rgba(255, 255, 255, 0.08);
-  backdrop-filter: blur(12px);
-  padding: 1.5rem;
-  border-radius: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 16px 18px;
+  background: rgba(15, 20, 30, 0.7);
+  border-radius: 18px;
+  border: 1px solid rgba(100,255,255,0.16);
+  backdrop-filter: blur(6px);
+  color: #cfefff;
 }
 
-.collision-panel h3 {
-  color: #00f7ff;
-  font-family: "Orbitron", sans-serif;
-  margin-bottom: 1rem;
+.cp-title {
+  margin: 0 0 10px 0;
+  font-weight: 800;
+  color: #77f5ff;
+  letter-spacing: .5px;
 }
 
-.alerts .alert {
-  padding: 0.6rem;
-  border-radius: 0.5rem;
-  margin-top: 0.5rem;
-  font-size: 0.9rem;
+.cp-kpi {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 10px;
+  margin: 8px 0;
+  border-radius: 12px;
+  background: rgba(10, 20, 32, 0.5);
+  border: 1px solid rgba(90,230,255,0.12);
 }
 
-.alert.high {
-  background: rgba(255, 80, 80, 0.2);
-  border: 1px solid #ff5050;
+.cp-zones h4,
+.cp-alerts h4 {
+  margin: 14px 0 8px;
+  color: #9ff3ff;
+  font-weight: 700;
 }
 
-.alert.medium {
-  background: rgba(255, 200, 0, 0.15);
-  border: 1px solid #ffcc00;
+.cp-zone {
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.03);
 }
 
-.alert.low {
-  background: rgba(0, 255, 150, 0.15);
-  border: 1px solid #00ff99;
+.cp-zone.cp-alta { border-color: rgba(255,70,70,0.4); }
+.cp-zone.cp-media { border-color: rgba(255,190,55,0.35); }
+.cp-zone.cp-baja { border-color: rgba(80,200,255,0.35); }
+
+.cp-alerts ul {
+  margin: 6px 0 0 16px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
 }

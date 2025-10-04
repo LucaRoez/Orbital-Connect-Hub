@@ -1,382 +1,327 @@
-  // src/components/Planet.jsx
-  import React, { useEffect, useMemo, useRef, useState } from "react";
-  import { Canvas, useFrame, useLoader } from "@react-three/fiber";
-  import { OrbitControls } from "@react-three/drei";
-  import * as THREE from "three";
-  import axios from "axios";
-  import { useThree } from "@react-three/fiber";
-  import Modal from "./Modal";
+// src/components/Planet.jsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+import { OrbitControls } from "@react-three/drei";
+import * as THREE from "three";
+import axios from "axios";
 
-  /* ===========================
-    Util: lat/lon -> vector 3D
-  =========================== */
-  function latLonToVector3(lat, lon, radius) {
-    const phi = (90 - lat) * (Math.PI / 180);
-    const theta = (lon + 180) * (Math.PI / 180);
-    return new THREE.Vector3(
-      -(radius * Math.sin(phi) * Math.cos(theta)),
-      radius * Math.cos(phi),
-      radius * Math.sin(phi) * Math.sin(theta)
-    );
-  }
-
-  /* ===========================
-    Punto de evento en el globo
-  =========================== */
-  function EventPoint({ position, color = "#ff5555", onClick }) {
-    const ref = useRef();
-    // pequeño pulso
-    useFrame(({ clock }) => {
-      if (!ref.current) return;
-      const s = 1 + Math.sin(clock.getElapsedTime() * 2) * 0.08;
-      ref.current.scale.setScalar(s);
-    });
-    return (
-      <mesh ref={ref} position={position} onClick={onClick}>
-        <sphereGeometry args={[0.035, 8, 8]} />
-        <meshBasicMaterial color={color} />
-      </mesh>
-    );
-  }
-
-  function FloatingBubble() {
-  const [bubbles, setBubbles] = useState([]);
-  const [selectedBubble, setSelectedBubble] = useState(null);
-  const [opportunities, setOpportunities] = useState([]);
-  const [selected, setSelected] = useState(null);
-
-  useEffect(() => {
-    async function loadOpportunities() {
-      try {
-        const res = await fetch("/data/opportunities.json"); // ✅ así se accede a public/data/offers.json
-        const data = await res.json();
-        setOpportunities(data);
-      } catch (err) {
-        console.error("Error cargando opportunities.json:", err);
-      }
-    }
-    loadOpportunities();
-  }, []);
-
-  // Genera posición aleatoria dentro del contenedor
-  const randomPosition = () => ({
-    x: Math.random() * 300, // ancho del contenedor
-    y: Math.random() * 300, // alto del contenedor
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const id = Date.now();
-      const pos = randomPosition();
-
-      // Puedes asignar un title aleatorio o fijo
-      const title = `Bubble #${id}`;
-
-      setBubbles((prev) => {
-        const newBubbles = [...prev, { id, position: pos, title, direction: 1 }];
-        return newBubbles;
-      });
-
-      setTimeout(() => {
-        setBubbles((prev) => prev.filter((b) => b.id !== id));
-      }, 4000);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-    useEffect(() => {
-    const moveInterval = setInterval(() => {
-      setBubbles((prev) =>
-        prev.map((b) => {
-          let newX = b.position.x + b.direction * 0.5; // mueve 2px por tick
-          if (newX < 0 || newX > 300) {
-            // invierte dirección si toca el borde
-            newX = Math.min(Math.max(newX, 0), 300);
-          }
-          return { ...b, position: { ...b.position, x: newX }, direction: b.direction };
-        })
-      );
-    }, 50); // actualiza cada 100ms
-
-    return () => clearInterval(moveInterval);
-  }, []);
-
-  return (
-    <>
-      {bubbles.map((bubble) => (
-        <img
-          key={bubble.id}
-          src="/img/bubble.png"
-          alt="bubble"
-          style={{
-            position: "absolute",
-            left: bubble.position.x,
-            top: bubble.position.y,
-            width: 50,
-            height: 75,
-            cursor: "pointer",
-          }}
-          onClick={() => {
-            const randomIndex = Math.floor(Math.random() * opportunities.length);
-            const opp = opportunities[randomIndex];
-            console.log(opp)
-            setSelectedBubble({ ...bubble, data: opp });
-          }}
-
-        />
-      ))}
-
-      {selectedBubble && (
-        <Modal
-          title={selectedBubble.title}
-          width={70}
-          body={
-            <div className="flex flex-col">
-              <div className="flex gap-4">
-                <div>
-                  <img
-                    src={selectedBubble.data.image}
-                    alt={selectedBubble.data.title}
-                    style={{ width: 290, height: 290, objectFit: "cover", borderRadius: "8px" }}
-                  />
-
-                  <p>
-                    <a href={selectedBubble.data.contact}>Contacto</a>
-                  </p>
-                </div>
-                <div className="no-margin-p descripcion-oportunity">
-                  <h1>{selectedBubble.data.title}</h1>
-                  <p><strong>Riesgo:</strong> {selectedBubble.data.riskLevel}</p>
-                  <p><strong>Tipo:</strong> {selectedBubble.data.type}</p>
-                  <p><strong>Categoría:</strong> {selectedBubble.data.category}</p>
-                  <p><strong>Descripción:</strong> {selectedBubble.data.description}</p>
-                  <p>
-                    <strong>Valor Potencial:</strong> {selectedBubble.data.potentialValue}{" "}
-                    {selectedBubble.data.currency}
-                  </p>
-                  <p>
-                    <strong>Partner:</strong> {selectedBubble.data.partner}
-                  </p>
-                </div>
-              </div>
-              <div>
-              </div>
-            </div>
-          }
-
-          onClose={() => setSelectedBubble(null)}
-        />
-      )}
-    </>
+/* ===========================
+   lat/lon -> vector 3D
+=========================== */
+function latLonToVector3(lat, lon, radius) {
+  const phi = (90 - lat) * (Math.PI / 180);
+  const theta = (lon + 180) * (Math.PI / 180);
+  return new THREE.Vector3(
+    -(radius * Math.sin(phi) * Math.cos(theta)),
+    radius * Math.cos(phi),
+    radius * Math.sin(phi) * Math.sin(theta)
   );
 }
 
+/* ===========================
+   Puntos de eventos (EONET/GDACS)
+=========================== */
+function EventPoint({ position, color = "#ff5555", onClick }) {
+  const ref = useRef();
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const s = 1 + Math.sin(clock.getElapsedTime() * 2) * 0.08;
+    ref.current.scale.setScalar(s);
+  });
+  return (
+    <mesh ref={ref} position={position} onClick={onClick}>
+      <sphereGeometry args={[0.035, 8, 8]} />
+      <meshBasicMaterial color={color} />
+    </mesh>
+  );
+}
 
+/* ===========================
+   Puntos de oportunidades (AZUL)
+=========================== */
+function OpportunityPoint({ position, onClick }) {
+  const ref = useRef();
+  useFrame(({ clock }) => {
+    if (!ref.current) return;
+    const s = 1 + Math.sin(clock.getElapsedTime() * 2) * 0.3;
+    ref.current.scale.setScalar(s);
+  });
 
-  /* ===========================
-    Globo con textura realista
-  =========================== */
-  function TexturedGlobe({ events, onSelect }) {
-    const group = useRef();
+  return (
+    <mesh ref={ref} position={position} onClick={onClick}>
+      {/* tamaño más grande para que se vean bien */}
+      <sphereGeometry args={[0.12, 16, 16]} />
+      {/* OJO: meshBasicMaterial no soporta emissive; usamos color + blending */}
+      <meshBasicMaterial
+        color={"#00d4ff"}
+        transparent
+        opacity={0.95}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+      />
+    </mesh>
+  );
+}
 
-    // Cargamos la textura de la Tierra (día)
-    const earthMap = useLoader(THREE.TextureLoader, "/img/earth_day.jpg");
+/* ===========================
+   Globo con textura realista
+=========================== */
+function TexturedGlobe({ events, opportunities, onSelectEvent, onSelectOpp }) {
+  const group = useRef();
+  const earthMap = useLoader(THREE.TextureLoader, "/img/earth_day.jpg");
 
-    useFrame((_, delta) => {
-      if (group.current) group.current.rotation.y += delta * 0.04; // rotación lenta
-    });
+  useFrame((_, delta) => {
+    if (group.current) group.current.rotation.y += delta * 0.03; // rotación suave
+  });
 
+  return (
+    <group ref={group}>
+      {/* Tierra */}
+      <mesh>
+        <sphereGeometry args={[2, 128, 128]} />
+        <meshStandardMaterial map={earthMap} roughness={1} metalness={0} />
+      </mesh>
 
-    return (
-      <group ref={group}>
-        {/* Tierra texturizada */}
-        <mesh>
-          <sphereGeometry args={[2, 128, 128]} />
-          <meshStandardMaterial
-            map={earthMap}
-            roughness={1}
-            metalness={0}
-          />
-        </mesh>
+      {/* Atmósfera */}
+      <mesh>
+        <sphereGeometry args={[2.05, 128, 128]} />
+        <meshBasicMaterial
+          color={"#21e6c1"}
+          transparent
+          opacity={0.08}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
+        />
+      </mesh>
 
-        {/* Atmósfera suave */}
-        <mesh>
-          <sphereGeometry args={[2.05, 128, 128]} />
-          <meshBasicMaterial
-            color={"#21e6c1"}
-            transparent
-            opacity={0.06}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </mesh>
+      {/* Eventos (rojo/amarillo) */}
+      {events.map((ev, i) => (
+        <EventPoint
+          key={`ev-${i}`}
+          position={latLonToVector3(ev.lat, ev.lon, 2.05)}
+          color={ev.color}
+          onClick={() => onSelectEvent(ev)}
+        />
+      ))}
 
-        {/* Eventos */}
-        {events.map((ev, i) => (
-          <EventPoint
-            key={`${ev.source}-${i}`}
-            position={latLonToVector3(ev.lat, ev.lon, 2.05)}
-            color={ev.color}
-            onClick={() => onSelect(ev)}
-          />
-        ))}
-      </group>
-    );
-  }
+      {/* Oportunidades (azul) */}
+      {opportunities.map((opp, i) => (
+        <OpportunityPoint
+          key={`opp-${i}`}
+          position={latLonToVector3(opp.lat, opp.lon, 2.15)} // un poco por encima de la superficie
+          onClick={() => onSelectOpp(opp)}
+        />
+      ))}
+    </group>
+  );
+}
 
-  /* ===========================
-    Mapeo de categoría -> imagen/color
-  =========================== */
-  const imgMap = {
-    Wildfires: "/img/wildfire.jpg",
-    "Severe Storms": "/img/storm.jpg",
-    Volcanoes: "/img/volcano.jpg",
-    Floods: "/img/flood.jpg",
-    // GDACS event types (approx mapping)
-    WF: "/img/wildfire.jpg",
-    TC: "/img/storm.jpg",
-    FL: "/img/flood.jpg",
-    VO: "/img/volcano.jpg",
-  };
+/* ===========================
+   Mapeos de imagen / color
+=========================== */
+const imgMap = {
+  Wildfires: "/img/wildfire.jpg",
+  "Severe Storms": "/img/storm.jpg",
+  Volcanoes: "/img/volcano.jpg",
+  Floods: "/img/flood.jpg",
+  WF: "/img/wildfire.jpg",
+  TC: "/img/storm.jpg",
+  FL: "/img/flood.jpg",
+  VO: "/img/volcano.jpg",
+};
 
-  const colorMap = {
-    Wildfires: "#ff4d4d",
-    "Severe Storms": "#ffd84d",
-    Volcanoes: "#ff7a1a",
-    Floods: "#43c6f9",
-    WF: "#ff4d4d",
-    TC: "#ffd84d",
-    FL: "#43c6f9",
-    VO: "#ff7a1a",
-  };
+const colorMap = {
+  Wildfires: "#ff4d4d",
+  "Severe Storms": "#ffd84d",
+  Volcanoes: "#ff7a1a",
+  Floods: "#43c6f9",
+  WF: "#ff4d4d",
+  TC: "#ffd84d",
+  FL: "#43c6f9",
+  VO: "#ff7a1a",
+};
 
-  /* ===========================
-    Fetched events (EONET + GDACS)
-  =========================== */
-  export default function Planet() {
-    const [events, setEvents] = useState([]);
-    const [selected, setSelected] = useState(null);
-    const [onlyWithImage, setOnlyWithImage] = useState(true);
+/* ===========================
+   Componente principal
+=========================== */
+export default function Planet() {
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-    useEffect(() => {
-      (async () => {
-        try {
-          const [eonetRes, gdacsRes] = await Promise.all([
-            axios.get("https://eonet.gsfc.nasa.gov/api/v3/events"),
-            // GDACS listado básico (si falla, lo ignoramos)
-            axios
-              .get(
-                "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventTypes=WF,TC,FL,VO"
-              )
-              .catch(() => ({ data: { features: [] } })),
-          ]);
+  const [allOpps, setAllOpps] = useState([]);
+  const [visibleOpps, setVisibleOpps] = useState([]);
+  const [selectedOpp, setSelectedOpp] = useState(null);
 
-          // --- EONET ---
-          const eonetEvents = (eonetRes.data?.events || [])
-            .map((e) => {
-              const g = e.geometry?.[0];
-              if (!g || !g.coordinates) return null;
-              const [lon, lat] = g.coordinates;
-              const cat = e.categories?.[0]?.title || "Event";
-              return {
-                source: "EONET",
-                title: e.title,
-                category: cat,
-                lat,
-                lon,
-                link: e.sources?.[0]?.url || "https://eonet.gsfc.nasa.gov",
-                image: imgMap[cat] || null,
-                color: colorMap[cat] || "#ffaa00",
-              };
-            })
-            .filter(Boolean);
+  const [onlyWithImage, setOnlyWithImage] = useState(true);
 
-          // --- GDACS ---
-          // En muchos casos GDACS devuelve geometry al estilo GeoJSON (features)
-          const gdacsFeatures = gdacsRes.data?.features || [];
-          const gdacsEvents = gdacsFeatures
-            .map((f) => {
-              const prop = f.properties || {};
-              const geom = f.geometry || {};
-              let lat = prop?.lat || (geom.coordinates ? geom.coordinates[1] : null);
-              let lon = prop?.lon || (geom.coordinates ? geom.coordinates[0] : null);
-              if (lat == null || lon == null) return null;
+  // CARGA EONET + GDACS (igual que antes)
+  useEffect(() => {
+    (async () => {
+      try {
+        const [eonetRes, gdacsRes] = await Promise.all([
+          axios.get("https://eonet.gsfc.nasa.gov/api/v3/events"),
+          axios
+            .get(
+              "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventTypes=WF,TC,FL,VO"
+            )
+            .catch(() => ({ data: { features: [] } })),
+        ]);
 
-              // GDACS types: WF (wildfire), FL (flood), TC (tropical cyclone), VO (volcano), EQ (earthquake), etc.
-              const type = prop.eventtype || prop.eventType || "Event";
-              const title = prop.name || prop.title || type;
-              const url = prop?.url || prop?.episodeLink || "https://www.gdacs.org/";
+        const eonetEvents = (eonetRes.data?.events || [])
+          .map((e) => {
+            const g = e.geometry?.[0];
+            if (!g || !g.coordinates) return null;
+            const [lon, lat] = g.coordinates;
+            const cat = e.categories?.[0]?.title || "Event";
+            return {
+              source: "EONET",
+              title: e.title,
+              category: cat,
+              lat,
+              lon,
+              link: e.sources?.[0]?.url || "https://eonet.gsfc.nasa.gov",
+              image: imgMap[cat] || null,
+              color: colorMap[cat] || "#ffaa00",
+            };
+          })
+          .filter(Boolean);
 
-              return {
-                source: "GDACS",
-                title,
-                category: type,
-                lat,
-                lon,
-                link: url,
-                image: imgMap[type] || null,
-                color: colorMap[type] || "#00ffc8",
-              };
-            })
-            .filter(Boolean);
+        const gdacsFeatures = gdacsRes.data?.features || [];
+        const gdacsEvents = gdacsFeatures
+          .map((f) => {
+            const prop = f.properties || {};
+            const geom = f.geometry || {};
+            let lat = prop?.lat || (geom.coordinates ? geom.coordinates[1] : null);
+            let lon = prop?.lon || (geom.coordinates ? geom.coordinates[0] : null);
+            if (lat == null || lon == null) return null;
+            const type = prop.eventtype || prop.eventType || "Event";
+            const title = prop.name || prop.title || type;
+            const url = prop?.url || prop?.episodeLink || "https://www.gdacs.org/";
 
-          // Combinar y filtrar si hace falta
-          const combined = [...eonetEvents, ...gdacsEvents];
-          setEvents(onlyWithImage ? combined.filter((e) => !!e.image) : combined);
-        } catch (err) {
-          console.error("Error trayendo eventos:", err);
-        }
-      })();
-    }, [onlyWithImage]);
+            return {
+              source: "GDACS",
+              title,
+              category: type,
+              lat,
+              lon,
+              link: url,
+              image: imgMap[type] || null,
+              color: colorMap[type] || "#00ffc8",
+            };
+          })
+          .filter(Boolean);
 
-    const lights = useMemo(
-      () => (
-        <>
-          <ambientLight intensity={0.7} />
-          <directionalLight position={[5, 5, 5]} intensity={1.2} />
-          <pointLight position={[-6, -6, 2]} intensity={0.8} />
-        </>
-      ),
-      []
-    );
+        const combined = [...eonetEvents, ...gdacsEvents];
+        setEvents(onlyWithImage ? combined.filter((e) => !!e.image) : combined);
+      } catch (err) {
+        console.error("Error trayendo eventos:", err);
+      }
+    })();
+  }, [onlyWithImage]);
 
-    return (
-      <div>
-        <div className="globeWrap" style={{ width: 520, height: 520 }}>
-          <Canvas
-            camera={{ position: [0, 0, 5.5], fov: 45 }}
-            style={{ width: '100%', height: '100%' }}  // fija al contenedor
-          >
-            {lights}
-            <TexturedGlobe events={events} onSelect={setSelected} />
-            <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />
-          </Canvas>
-          {/* Floating bubble independiente */}
-          <FloatingBubble position={[0, 2.3, 0]} />
-        </div>
+  // CARGA de oportunidades desde /public/data/opportunities.json
+  useEffect(() => {
+    fetch("/data/opportunities.json")
+      .then((r) => r.json())
+      .then((data) => setAllOpps(data))
+      .catch((e) => console.error("Error cargando opportunities.json:", e));
+  }, []);
 
-        {/* Modal del evento */}
-        {selected && (
-          <div className="event-modal" onClick={() => setSelected(null)}>
-            <div className="event-card" onClick={(e) => e.stopPropagation()}>
-              {selected.image && <img src={selected.image} alt={selected.title} />}
-              <div className="event-body">
-                <h2>{selected.title}</h2>
-                <p>
-                  <strong>Fuente:</strong> {selected.source} |{" "}
-                  <strong>Categoría:</strong> {selected.category}
-                </p>
-              </div>
-              <div className="event-actions">
-                <a href={selected.link} target="_blank" rel="noreferrer">
-                  Ver fuente oficial
-                </a>
-                <button onClick={() => setSelected(null)}>Cerrar</button>
-              </div>
+  // Spawner de oportunidades: cada 2.5s agrega una nueva y se queda
+  useEffect(() => {
+    if (allOpps.length === 0) return;
+    const id = setInterval(() => {
+      const base = allOpps[Math.floor(Math.random() * allOpps.length)];
+      // si faltaran coords en el JSON, generamos aleatorias válidas
+      const lat = typeof base.lat === "number" ? base.lat : Math.random() * 180 - 90;
+      const lon = typeof base.lon === "number" ? base.lon : Math.random() * 360 - 180;
+      setVisibleOpps((prev) =>
+        prev.length > 30 ? [...prev.slice(1), { ...base, lat, lon }] : [...prev, { ...base, lat, lon }]
+      );
+    }, 2500);
+    return () => clearInterval(id);
+  }, [allOpps]);
+
+  const lights = useMemo(
+    () => (
+      <>
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[5, 5, 5]} intensity={1.2} />
+        <pointLight position={[-6, -6, 2]} intensity={1} />
+      </>
+    ),
+    []
+  );
+
+  return (
+    <div className="globeWrap" style={{ width: 520, height: 520 }}>
+      <Canvas camera={{ position: [0, 0, 6], fov: 45 }}>
+        {lights}
+        <TexturedGlobe
+          events={events}
+          opportunities={visibleOpps}
+          onSelectEvent={setSelectedEvent}
+          onSelectOpp={setSelectedOpp}
+        />
+        <OrbitControls enablePan={false} enableZoom={false} />
+      </Canvas>
+
+      {/* Modal evento (EONET/GDACS) */}
+      {selectedEvent && (
+        <div className="event-modal" onClick={() => setSelectedEvent(null)}>
+          <div className="event-card" onClick={(e) => e.stopPropagation()}>
+            {selectedEvent.image && (
+              <img src={selectedEvent.image} alt={selectedEvent.title} />
+            )}
+            <div className="event-body">
+              <h2>{selectedEvent.title}</h2>
+              <p>
+                <strong>Fuente:</strong> {selectedEvent.source} |{" "}
+                <strong>Categoría:</strong> {selectedEvent.category}
+              </p>
+            </div>
+            <div className="event-actions">
+              <a href={selectedEvent.link} target="_blank" rel="noreferrer">
+                Ver fuente oficial
+              </a>
+              <button onClick={() => setSelectedEvent(null)}>Cerrar</button>
             </div>
           </div>
-        )}
-      </div>
-    );
-  }
+        </div>
+      )}
+
+      {/* Modal oportunidad (AZUL) */}
+      {selectedOpp && (
+        <div className="event-modal" onClick={() => setSelectedOpp(null)}>
+          <div className="event-card" onClick={(e) => e.stopPropagation()}>
+            {selectedOpp.image && (
+              <img
+                src={selectedOpp.image}
+                alt={selectedOpp.title}
+                style={{ width: "100%", borderRadius: 8 }}
+              />
+            )}
+            <div className="event-body">
+              <h2>{selectedOpp.title}</h2>
+              <p><strong>Tipo:</strong> {selectedOpp.type}</p>
+              <p><strong>Categoría:</strong> {selectedOpp.category}</p>
+              <p>{selectedOpp.description}</p>
+              <p>
+                <strong>Valor Potencial:</strong> {selectedOpp.potentialValue}{" "}
+                {selectedOpp.currency}
+              </p>
+              <p><strong>Riesgo:</strong> {selectedOpp.riskLevel}</p>
+              <p><strong>Partner:</strong> {selectedOpp.partner}</p>
+            </div>
+            <div className="event-actions">
+              <a href={selectedOpp.contact} target="_blank" rel="noreferrer">
+                Contactar
+              </a>
+              <button onClick={() => setSelectedOpp(null)}>Cerrar</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
