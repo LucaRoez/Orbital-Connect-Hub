@@ -4,6 +4,7 @@ import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import axios from "axios";
+import Modal from "./Modal";
 
 /* ===========================
    lat/lon -> vector 3D
@@ -261,7 +262,7 @@ export default function Planet() {
           events={events}
           opportunities={visibleOpps}
           onSelectEvent={setSelectedEvent}
-          onSelectOpp={setSelectedOpp}
+          onSelectOpp={($event) => {setSelectedOpp($event); console.log($event)}}
         />
         <OrbitControls enablePan={false} enableZoom={false} />
       </Canvas>
@@ -290,38 +291,48 @@ export default function Planet() {
         </div>
       )}
 
-      {/* Modal oportunidad (AZUL) */}
-      {selectedOpp && (
-        <div className="event-modal" onClick={() => setSelectedOpp(null)}>
-          <div className="event-card" onClick={(e) => e.stopPropagation()}>
-            {selectedOpp.image && (
-              <img
-                src={selectedOpp.image}
-                alt={selectedOpp.title}
-                style={{ width: "100%", borderRadius: 8 }}
-              />
-            )}
-            <div className="event-body">
-              <h2>{selectedOpp.title}</h2>
-              <p><strong>Tipo:</strong> {selectedOpp.type}</p>
-              <p><strong>Categoría:</strong> {selectedOpp.category}</p>
-              <p>{selectedOpp.description}</p>
-              <p>
-                <strong>Valor Potencial:</strong> {selectedOpp.potentialValue}{" "}
-                {selectedOpp.currency}
-              </p>
-              <p><strong>Riesgo:</strong> {selectedOpp.riskLevel}</p>
-              <p><strong>Partner:</strong> {selectedOpp.partner}</p>
+       {/* Modal del evento */}
+       {selectedOpp && (
+        <Modal
+          title={selectedOpp.title}
+          width={70}
+          body={
+            <div className="flex flex-col">
+              <div className="flex gap-4">
+                <div>
+                  <img
+                    src={selectedOpp.image}
+                    alt={selectedOpp.title}
+                    style={{ width: 290, height: 290, objectFit: "cover", borderRadius: "8px" }}
+                  />
+
+                  <p>
+                    <a href={selectedOpp.contact}>Contacto</a>
+                  </p>
+                </div>
+                <div className="no-margin-p descripcion-oportunity">
+                  <h1>{selectedOpp.title}</h1>
+                  <p><strong>Riesgo:</strong> {selectedOpp.riskLevel}</p>
+                  <p><strong>Tipo:</strong> {selectedOpp.type}</p>
+                  <p><strong>Categoría:</strong> {selectedOpp.category}</p>
+                  <p><strong>Descripción:</strong> {selectedOpp.description}</p>
+                  <p>
+                    <strong>Valor Potencial:</strong> {selectedOpp.potentialValue}{" "}
+                    {selectedOpp.currency}
+                  </p>
+                  <p>
+                    <strong>Partner:</strong> {selectedOpp.partner}
+                  </p>
+                </div>
+              </div>
+              <div>
+              </div>
             </div>
-            <div className="event-actions">
-              <a href={selectedOpp.contact} target="_blank" rel="noreferrer">
-                Contactar
-              </a>
-              <button onClick={() => setSelectedOpp(null)}>Cerrar</button>
-            </div>
-          </div>
-        </div>
+          }
+
+          onClose={() => setSelectedOpp(null)}
+        />
       )}
-    </div>
+      </div>
   );
 }
