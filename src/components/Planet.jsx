@@ -350,7 +350,7 @@
           >
             {lights}
             <TexturedGlobe events={events} onSelect={setSelected} />
-            <OrbitControls enablePan={false} enableZoom={false} />
+            <OrbitControls enablePan={false} enableZoom={false} enableRotate={false} />
           </Canvas>
           {/* Floating bubble independiente */}
           <FloatingBubble position={[0, 2.3, 0]} />
