@@ -79,8 +79,8 @@
 
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== id));
-      }, 5000);
-    }, 1000);
+      }, 4000);
+    }, 5000);
 
     return () => clearInterval(interval);
   }, []);
@@ -221,8 +221,6 @@
             onClick={() => onSelect(ev)}
           />
         ))}
-        
-
       </group>
     );
   }
