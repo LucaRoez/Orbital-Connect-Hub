@@ -256,9 +256,6 @@ footer {
   transition: transform 0.2s;
   color: #000;
 }
-.modal-content button:hover {
-  transform: scale(1.05);
-}
 .modal-body{
   margin-top: 2rem;
 }
@@ -464,3 +461,215 @@ footer {
   font-size: 2rem !important;
 }
 
+/* ========================
+   🌌 Marketplace Styles
+======================== */
+.marketplace {
+  padding: 30px;
+  color: #e0f7ff;
+  font-family: "Inter", sans-serif;
+}
+
+/* ---- Título ---- */
+.marketplace-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #00eaff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-shadow: 0px 0px 10px rgba(0, 234, 255, 0.8);
+}
+
+/* ---- Grid ---- */
+.offers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  justify-items: center;
+}
+
+/* ---- Tarjeta ---- */
+.offer-card {
+  background: rgba(10, 20, 40, 0.6);
+  border-radius: 16px;
+  padding: 18px;
+  width: 100%;
+  max-width: 270px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 15px rgba(0, 234, 255, 0.2);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  cursor: pointer;
+}
+
+.offer-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0px 0px 20px rgba(0, 234, 255, 0.6);
+}
+
+/* ---- Imagen ---- */
+.offer-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-bottom: 12px;
+}
+
+/* ---- Contenido ---- */
+.offer-body h3 {
+  font-size: 1.2rem;
+  margin: 6px 0;
+  color: #00eaff;
+}
+
+.offer-body .provider {
+  font-size: 0.9rem;
+  color: #aaa;
+  margin-bottom: 6px;
+}
+
+.offer-body .category {
+  font-size: 0.85rem;
+  color: #ffdd57;
+  margin-bottom: 8px;
+}
+
+.offer-body .price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #00ffc8;
+}
+
+.green-seal {
+  display: inline-block;
+  background: rgba(0, 255, 128, 0.1);
+  color: #00ff99;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  margin-left: 6px;
+  border: 1px solid rgba(0, 255, 128, 0.4);
+}
+
+/* ---- Botón ---- */
+.offer-btn {
+  margin-top: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: linear-gradient(90deg, black, #005f68);
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.offer-btn::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, black, #00393e);
+  opacity: 1;
+  z-index: -1;
+}
+
+.offer-btn:hover::before {
+  animation: revealGradient 0.2s forwards;
+}
+
+/* Definición de animación con pasos intermedios */
+@keyframes revealGradient {
+  0% {
+    background: linear-gradient(90deg, black, #005b64);
+  }
+  25% {
+    background: linear-gradient(90deg, #003f48, #008f8c);
+  }
+  50% {
+    background: linear-gradient(90deg, #007f7a, #00d0c8);
+  }
+  75% {
+    background: linear-gradient(90deg, #00bfbf, #00f0f0);
+  }
+  100% {
+    background: linear-gradient(90deg, #00ffc8, #00eaff);
+  }
+}
+
+
+.offer-btn:hover {
+  transform: scale(1.05);
+}
+
+
+/* ========================
+   Modal de detalle
+======================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 20, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.satelite-img {
+  width: 100%;
+  height: 220px;
+  border-radius: 12px;
+  background-size: 120% 180%; /* Hacer que la imagen sea más grande que el contenedor */
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  transition: background-position 0.2s ease;
+}
+
+.modal-content h2 {
+  color: #00eaff;
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+}
+
+.modal-content .price {
+  font-size: 1.2rem;
+  color: #00ffc8;
+  margin: 12px 0;
+}
+
+.contact-link {
+  display: inline-block;
+  margin-top: 12px;
+  color: #00eaff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+.close-btn {
+  margin-top: 16px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  background: #ff4d4d;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.close-btn:hover {
+  background: #ff3333;
+}
