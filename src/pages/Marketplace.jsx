@@ -19,11 +19,6 @@ export default function Marketplace() {
     fetchOffers();
   }, []);
 
-  function setOffer(offer) {
-    setSelected(offer);
-    console.log(offer);
-  }
-
   useEffect(() => {
     const handleMouseMove = (e) => {
       const x = (e.clientX / window.innerWidth - 0.5) * 80; // mayor factor horizontal
@@ -50,7 +45,7 @@ export default function Marketplace() {
               <p className="price">💲 {offer.price?.toLocaleString()} USD</p>
               {offer.ecoCredentials && <span className="green-seal">♻️ Eco</span>}
             </div>
-            <button className="offer-btn" onClick={() => setOffer(offer)}>
+            <button className="offer-btn" onClick={() => setSelected(offer)}>
               Más info
             </button>
           </div>

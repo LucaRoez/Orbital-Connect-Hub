@@ -1,0 +1,7 @@
+[
+  { "name": "Starlink-3042", "type": "comms", "lat": 10, "lon": 20, "alt": 550 },
+  { "name": "Landsat-9", "type": "earth_obs", "lat": -30, "lon": 60, "alt": 700 },
+  { "name": "OneWeb-45", "type": "comms", "lat": 25, "lon": -45, "alt": 1200 },
+  { "name": "CubeSat-12", "type": "research", "lat": 48, "lon": -80, "alt": 400 },
+  { "name": "NOAA-22", "type": "weather", "lat": -15, "lon": 150, "alt": 800 }
+]

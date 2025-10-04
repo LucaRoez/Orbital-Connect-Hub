@@ -1,0 +1,14 @@
+{
+  "satellites": 42,
+  "fragments": 380,
+  "risk_zones": [
+    { "altitude": 750, "density": 0.023, "severity": "Alta" },
+    { "altitude": 900, "density": 0.015, "severity": "Media" },
+    { "altitude": 1200, "density": 0.009, "severity": "Baja" }
+  ],
+  "alerts": [
+    "⚠️ Colisión detectada en órbita 750 km",
+    "⚠️ Congestión en zona 700 km (1200 objetos)",
+    "🛰️ Satélite Starlink-3042 fuera de trayectoria nominal"
+  ]
+}
