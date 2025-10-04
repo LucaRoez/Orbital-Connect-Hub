@@ -206,12 +206,12 @@ footer {
 
 .modal-content {
   background: rgba(20, 20, 30, 0.85);
-  border: 1px solid rgba(0, 255, 255, 0.3);
+  border: 1px solid rgba(0,255,255,.15);
   border-radius: 1rem;
   padding: 2rem;
   color: #fff;
   text-align: center;
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.3);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
   animation: fadeIn 0.3s ease-in-out;
 }
 
@@ -232,7 +232,6 @@ footer {
 .modal-content p {
   font-size: 0.9rem;
   color: #ccc;
-  margin-bottom: 1rem;
 }
 
 .modal-content a {
@@ -378,7 +377,6 @@ footer {
   background: #0a0a0a;
   padding: 25px 30px;
   border-radius: 12px;
-  border: 1px solid rgba(0, 255, 255, 0.407);
   color: #0ff;
   font-family: 'Inter', sans-serif;
   text-align: center;
@@ -395,7 +393,6 @@ footer {
 .bubble-modal p {
   font-size: 1rem;
   text-shadow: 0 0 4px #0ff;
-  margin-bottom: 20px;
 }
 
 /* Botón cerrar */
@@ -436,3 +433,34 @@ footer {
   text-align: end;
   gap: 1rem;
 }
+
+.risk-box {
+  margin-top: 1rem;
+  display: flex;
+  padding: 1rem 2rem;
+  gap: 1rem;
+  border-radius: 8px;
+}
+
+/* Fondo según riesgo */
+.risk-box.risk-alto {
+  background-color: #e74c3c; /* rojo */
+}
+
+.risk-box.risk-medio {
+  background-color: #f39c12; /* amarillo/naranja */
+}
+
+.risk-box.risk-bajo {
+  background-color: #2ecc71; /* verde */
+}
+
+/* Texto */
+.risk-label,
+.risk-value {
+  font-weight: bold;
+  margin: 0;
+  color: #000;
+  font-size: 2rem !important;
+}
+

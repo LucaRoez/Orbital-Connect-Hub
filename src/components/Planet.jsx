@@ -4,8 +4,8 @@
   import { OrbitControls } from "@react-three/drei";
   import * as THREE from "three";
   import axios from "axios";
-import { useThree } from "@react-three/fiber";
-import Modal from "./Modal";
+  import { useThree } from "@react-three/fiber";
+  import Modal from "./Modal";
 
   /* ===========================
     Util: lat/lon -> vector 3D
@@ -60,8 +60,8 @@ import Modal from "./Modal";
 
   // Genera posición aleatoria dentro del contenedor
   const randomPosition = () => ({
-    x: Math.random() * 350, // ancho del contenedor
-    y: Math.random() * 350, // alto del contenedor
+    x: Math.random() * 300, // ancho del contenedor
+    y: Math.random() * 300, // alto del contenedor
   });
 
   useEffect(() => {
@@ -73,16 +73,33 @@ import Modal from "./Modal";
       const title = `Bubble #${id}`;
 
       setBubbles((prev) => {
-        const newBubbles = [...prev, { id, position: pos, title }];
+        const newBubbles = [...prev, { id, position: pos, title, direction: 1 }];
         return newBubbles;
       });
 
       setTimeout(() => {
         setBubbles((prev) => prev.filter((b) => b.id !== id));
-      }, 3000);
-    }, 4000);
+      }, 5000);
+    }, 1000);
 
     return () => clearInterval(interval);
+  }, []);
+
+    useEffect(() => {
+    const moveInterval = setInterval(() => {
+      setBubbles((prev) =>
+        prev.map((b) => {
+          let newX = b.position.x + b.direction * 0.5; // mueve 2px por tick
+          if (newX < 0 || newX > 300) {
+            // invierte dirección si toca el borde
+            newX = Math.min(Math.max(newX, 0), 300);
+          }
+          return { ...b, position: { ...b.position, x: newX }, direction: b.direction };
+        })
+      );
+    }, 50); // actualiza cada 100ms
+
+    return () => clearInterval(moveInterval);
   }, []);
 
   return (
@@ -115,33 +132,36 @@ import Modal from "./Modal";
           title={selectedBubble.title}
           width={70}
           body={
-            <div className="flex gap-4">
+            <div className="flex flex-col">
+              <div className="flex gap-4">
+                <div>
+                  <img
+                    src={selectedBubble.data.image}
+                    alt={selectedBubble.data.title}
+                    style={{ width: 290, height: 290, objectFit: "cover", borderRadius: "8px" }}
+                  />
+
+                  <p>
+                    <a href={selectedBubble.data.contact}>Contacto</a>
+                  </p>
+                </div>
+                <div className="no-margin-p descripcion-oportunity">
+                  <h1>{selectedBubble.data.title}</h1>
+                  <p><strong>Riesgo:</strong> {selectedBubble.data.riskLevel}</p>
+                  <p><strong>Tipo:</strong> {selectedBubble.data.type}</p>
+                  <p><strong>Categoría:</strong> {selectedBubble.data.category}</p>
+                  <p><strong>Descripción:</strong> {selectedBubble.data.description}</p>
+                  <p>
+                    <strong>Valor Potencial:</strong> {selectedBubble.data.potentialValue}{" "}
+                    {selectedBubble.data.currency}
+                  </p>
+                  <p>
+                    <strong>Partner:</strong> {selectedBubble.data.partner}
+                  </p>
+                </div>
+              </div>
               <div>
-                <img
-                  src={selectedBubble.data.image}
-                  alt={selectedBubble.data.title}
-                  style={{ width: 290, height: 290, objectFit: "cover", borderRadius: "8px" }}
-                />
-
-                <p>
-                  <a href={selectedBubble.data.contact}>Contacto</a>
-                </p>
               </div>
-              <div className="no-margin-p descripcion-oportunity">
-                <h1>{selectedBubble.data.title}</h1>
-                <p><strong>Tipo:</strong> {selectedBubble.data.type}</p>
-                <p><strong>Categoría:</strong> {selectedBubble.data.category}</p>
-                <p><strong>Descripción:</strong> {selectedBubble.data.description}</p>
-                <p>
-                  <strong>Valor Potencial:</strong> {selectedBubble.data.potentialValue}{" "}
-                  {selectedBubble.data.currency}
-                </p>
-                <p><strong>Riesgo:</strong> {selectedBubble.data.riskLevel}</p>
-                <p>
-                  <strong>Partner:</strong> {selectedBubble.data.partner}
-                </p>
-              </div>
-
             </div>
           }
 
@@ -193,7 +213,6 @@ import Modal from "./Modal";
         </mesh>
 
         {/* Eventos */}
-        {/* 
         {events.map((ev, i) => (
           <EventPoint
             key={`${ev.source}-${i}`}
@@ -203,7 +222,6 @@ import Modal from "./Modal";
           />
         ))}
         
-        */}
 
       </group>
     );
