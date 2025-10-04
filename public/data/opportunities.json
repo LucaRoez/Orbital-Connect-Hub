@@ -12,7 +12,8 @@
     "riskLevel": "Medio",
     "insuranceLinked": true,
     "partner": "ESA Copernicus / ODPO",
-    "contact": "mailto:contact@orbitalcleanup.io"
+    "contact": "mailto:contact@orbitalcleanup.io",
+    "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
   },
   {
     "id": "leo-opp-002",
@@ -27,7 +28,8 @@
     "riskLevel": "Alto",
     "insuranceLinked": true,
     "partner": "Lloyd’s Space Insurance Division",
-    "contact": "mailto:insure@aon-space.example"
+    "contact": "mailto:insure@aon-space.example",
+     "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
   },
   {
     "id": "leo-opp-003",
