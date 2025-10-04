@@ -29,7 +29,7 @@
     "insuranceLinked": true,
     "partner": "Lloyd’s Space Insurance Division",
     "contact": "mailto:insure@aon-space.example",
-     "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
+    "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
   },
   {
     "id": "leo-opp-003",
@@ -44,7 +44,8 @@
     "riskLevel": "Bajo",
     "insuranceLinked": false,
     "partner": "NASA Worldview / USGS EarthExplorer",
-    "contact": "mailto:data@agroorbital.example"
+    "contact": "mailto:data@agroorbital.example",
+    "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
   },
   {
     "id": "leo-opp-004",
@@ -59,7 +60,8 @@
     "riskLevel": "Medio",
     "insuranceLinked": false,
     "partner": "OneWeb / SpaceX Shared LEO Infrastructure",
-    "contact": "mailto:network@iotlink.example"
+    "contact": "mailto:network@iotlink.example",
+    "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
   },
   {
     "id": "leo-opp-005",
@@ -74,6 +76,7 @@
     "riskLevel": "Medio",
     "insuranceLinked": true,
     "partner": "BioOrbit Labs / ISS Partnership",
-    "contact": "mailto:bio@orbitlab.example"
+    "contact": "mailto:bio@orbitlab.example",
+    "image":"https://www.esa.int/var/esa/storage/images/esa_multimedia/images/2008/03/debris_objects_-_mostly_debris_-_in_low_earth_orbit_leo_-_view_over_the_equator/9836792-3-eng-GB/Debris_objects_-_mostly_debris_-_in_low_Earth_orbit_LEO_-_view_over_the_equator_pillars.jpg"
   }
 ]

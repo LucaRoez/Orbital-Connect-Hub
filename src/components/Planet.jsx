@@ -5,6 +5,7 @@
   import * as THREE from "three";
   import axios from "axios";
 import { useThree } from "@react-three/fiber";
+import Modal from "./Modal";
 
   /* ===========================
     Util: lat/lon -> vector 3D
@@ -38,57 +39,119 @@ import { useThree } from "@react-three/fiber";
     );
   }
 
-  // FloatingBubble dentro del mismo componente
   function FloatingBubble() {
-    const [bubbles, setBubbles] = useState([]);
+  const [bubbles, setBubbles] = useState([]);
+  const [selectedBubble, setSelectedBubble] = useState(null);
+  const [opportunities, setOpportunities] = useState([]);
+  const [selected, setSelected] = useState(null);
 
-    // Genera posición aleatoria dentro del contenedor
-    const randomPosition = () => ({
-      x: Math.random() * 350, // ancho del contenedor - ajusta si quieres
-      y: Math.random() * 350, // alto del contenedor
-    });
+  useEffect(() => {
+    async function loadOpportunities() {
+      try {
+        const res = await fetch("/data/opportunities.json"); // ✅ así se accede a public/data/offers.json
+        const data = await res.json();
+        setOpportunities(data);
+      } catch (err) {
+        console.error("Error cargando opportunities.json:", err);
+      }
+    }
+    loadOpportunities();
+  }, []);
 
-    useEffect(() => {
-      const interval = setInterval(() => {
-        const id = Date.now();
-        const pos = randomPosition();
+  // Genera posición aleatoria dentro del contenedor
+  const randomPosition = () => ({
+    x: Math.random() * 350, // ancho del contenedor
+    y: Math.random() * 350, // alto del contenedor
+  });
 
-        setBubbles((prev) => {
-          const newBubbles = [...prev, { id, position: pos }];
-          console.log(newBubbles);
-          return newBubbles;
-        });
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const id = Date.now();
+      const pos = randomPosition();
 
-        setTimeout(() => {
-          setBubbles((prev) => prev.filter((b) => b.id !== id));
-        }, 5000);
-      }, 10000);
+      // Puedes asignar un title aleatorio o fijo
+      const title = `Bubble #${id}`;
 
-      return () => clearInterval(interval);
-    }, []);
+      setBubbles((prev) => {
+        const newBubbles = [...prev, { id, position: pos, title }];
+        return newBubbles;
+      });
 
-    return (
-      <>
-        {bubbles.map((bubble) => (
-          <img
-            key={bubble.id}
-            src="/img/bubble.png"
-            alt="bubble"
-            className=""
-            style={{
-              position: "absolute",
-              left: bubble.position.x,
-              top: bubble.position.y,
-              width: 50,
-              height: 75,
-              cursor: "pointer",
-            }}
-            onClick={() => console.log("Bubble clicked!")}
-          />
-        ))}
-      </>
-    );
-  }
+      setTimeout(() => {
+        setBubbles((prev) => prev.filter((b) => b.id !== id));
+      }, 3000);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      {bubbles.map((bubble) => (
+        <img
+          key={bubble.id}
+          src="/img/bubble.png"
+          alt="bubble"
+          style={{
+            position: "absolute",
+            left: bubble.position.x,
+            top: bubble.position.y,
+            width: 50,
+            height: 75,
+            cursor: "pointer",
+          }}
+          onClick={() => {
+            const randomIndex = Math.floor(Math.random() * opportunities.length);
+            const opp = opportunities[randomIndex];
+            console.log(opp)
+            setSelectedBubble({ ...bubble, data: opp });
+          }}
+
+        />
+      ))}
+
+      {selectedBubble && (
+        <Modal
+          title={selectedBubble.title}
+          width={70}
+          body={
+            <div className="flex gap-4">
+              <div>
+                <img
+                  src={selectedBubble.data.image}
+                  alt={selectedBubble.data.title}
+                  style={{ width: 290, height: 290, objectFit: "cover", borderRadius: "8px" }}
+                />
+
+                <p>
+                  <a href={selectedBubble.data.contact}>Contacto</a>
+                </p>
+              </div>
+              <div className="no-margin-p descripcion-oportunity">
+                <h1>{selectedBubble.data.title}</h1>
+                <p><strong>Tipo:</strong> {selectedBubble.data.type}</p>
+                <p><strong>Categoría:</strong> {selectedBubble.data.category}</p>
+                <p><strong>Descripción:</strong> {selectedBubble.data.description}</p>
+                <p>
+                  <strong>Valor Potencial:</strong> {selectedBubble.data.potentialValue}{" "}
+                  {selectedBubble.data.currency}
+                </p>
+                <p><strong>Riesgo:</strong> {selectedBubble.data.riskLevel}</p>
+                <p>
+                  <strong>Partner:</strong> {selectedBubble.data.partner}
+                </p>
+              </div>
+
+            </div>
+          }
+
+          onClose={() => setSelectedBubble(null)}
+        />
+      )}
+    </>
+  );
+}
+
 
 
   /* ===========================

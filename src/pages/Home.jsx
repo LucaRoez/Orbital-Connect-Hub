@@ -8,8 +8,6 @@ export default function Home() {
 return (
     <>
       <section className="contenido"><div>
-        <h2 className="title">Controla, analiza y comercializa LEO en un solo lugar</h2>
-
         {/* Layout central */}
         <div className="flex w-full justify-evenly">
           <div className="planet-wrapper w-1/2 ml-4">
@@ -43,8 +41,8 @@ return (
                 <strong>8</strong>
               </div>
             </div>
+            <h3>🚨 Alertas Orbitales</h3>
             <div className="alerts-panel">
-              <h3>🚨 Alertas Orbitales</h3>
               <div className="alert-card danger">
                 <FaExclamationTriangle className="alert-icon" />
                 <p>Colisión detectada en órbita 600km (&lt;48h)</p>

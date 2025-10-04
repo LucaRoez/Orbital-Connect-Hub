@@ -23,8 +23,6 @@ export default function Marketplace() {
   return (
 
     <div className="marketplace">
-      <h2 className="marketplace-title">🌌 Marketplace Orbital</h2>
-
       <div className="offers-grid">
         {offers.map((offer) => (
           <div key={offer.id} className="offer-card">

@@ -50,5 +50,44 @@
     "image": "/img/sat4.jpg",
     "description": "Imágenes multiespectrales de alta resolución enfocadas en agricultura y monitoreo ambiental.",
     "contact": "mailto:info@satview.example"
+  },
+  {
+    "id": "offer-005",
+    "title": "Earth Observation Satellite",
+    "provider": "SatView Global",
+    "category": "Datos Satelitales",
+    "priceUsd": 22000,
+    "orbit": { "class": "LEO-SSO", "altitudeKm": 500 },
+    "window": "Todo 2026",
+    "greenSeal": true,
+    "image": "/img/sat4.jpg",
+    "description": "Imágenes multiespectrales de alta resolución enfocadas en agricultura y monitoreo ambiental.",
+    "contact": "mailto:info@satview.example"
+  },
+  {
+    "id": "offer-006",
+    "title": "Earth Observation Satellite",
+    "provider": "SatView Global",
+    "category": "Datos Satelitales",
+    "priceUsd": 22000,
+    "orbit": { "class": "LEO-SSO", "altitudeKm": 500 },
+    "window": "Todo 2026",
+    "greenSeal": true,
+    "image": "/img/sat4.jpg",
+    "description": "Imágenes multiespectrales de alta resolución enfocadas en agricultura y monitoreo ambiental.",
+    "contact": "mailto:info@satview.example"
+  },
+  {
+    "id": "offer-007",
+    "title": "Earth Observation Satellite",
+    "provider": "SatView Global",
+    "category": "Datos Satelitales",
+    "priceUsd": 22000,
+    "orbit": { "class": "LEO-SSO", "altitudeKm": 500 },
+    "window": "Todo 2026",
+    "greenSeal": true,
+    "image": "/img/sat4.jpg",
+    "description": "Imágenes multiespectrales de alta resolución enfocadas en agricultura y monitoreo ambiental.",
+    "contact": "mailto:info@satview.example"
   }
 ]
