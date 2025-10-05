@@ -319,17 +319,17 @@ export default function Planet() {
                   />
 
                   <p>
-                    <a href={selectedOpp.contact}>Contacto</a>
+                    <a href={selectedOpp.contact}>View Satellite  </a>
                   </p>
                 </div>
                 <div className="no-margin-p descripcion-oportunity">
                   <h1>{selectedOpp.title}</h1>
-                  <p><strong>Riesgo:</strong> {selectedOpp.riskLevel}</p>
-                  <p><strong>Tipo:</strong> {selectedOpp.type}</p>
-                  <p><strong>Categoría:</strong> {selectedOpp.category}</p>
-                  <p><strong>Descripción:</strong> {selectedOpp.description}</p>
+                  <p><strong>Risk:</strong> {selectedOpp.riskLevel}</p>
+                  <p><strong>Type:</strong> {selectedOpp.type}</p>
+                  <p><strong>Category:</strong> {selectedOpp.category}</p>
+                  <p><strong>Description:</strong> {selectedOpp.description}</p>
                   <p>
-                    <strong>Valor Potencial:</strong> {selectedOpp.potentialValue}{" "}
+                    <strong>Potential Value:</strong> {selectedOpp.potentialValue}{" "}
                     {selectedOpp.currency}
                   </p>
                   <p>

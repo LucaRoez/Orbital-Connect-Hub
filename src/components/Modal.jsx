@@ -12,7 +12,7 @@ export default function Modal({ title, body, onClose, width = 50 }) {
       >
         <h2 style={{margin: 0}}>{title ?? ''}</h2>
         <div className="modal-body">{body}</div>
-        <button onClick={onClose}>Cerrar</button>
+        <button onClick={onClose}>Close</button>
       </div>
     </div>
   );

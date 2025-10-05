@@ -46,7 +46,7 @@ export default function Marketplace() {
               {offer.ecoCredentials && <span className="green-seal">♻️ Eco</span>}
             </div>
             <button className="offer-btn" onClick={() => setSelected(offer)}>
-              Más info
+              More Info
             </button>
           </div>
         ))}
@@ -67,9 +67,6 @@ export default function Marketplace() {
                 }}
               ></div>
 
-
-
-
               <h2>{selected.title}</h2>
               <p className="provider">{selected.provider}</p>
               <p>{selected.description}</p>
@@ -77,17 +74,22 @@ export default function Marketplace() {
                 💲 {selected.price?.toLocaleString()} USD
               </p>
               <p>
-                <strong>Ventana: </strong>
-                  <em>activo desde</em> {selected.window.from.toDate().toLocaleString()}
-                  <em>finalizado en</em> {selected.window.to.toDate().toLocaleString()}
+                <strong>Window: </strong>
+                  <em>Active since</em> {selected.window.from.toDate().toLocaleString()}
+                  <em> Completed on</em> {selected.window.to.toDate().toLocaleString()}
               </p>
               <p>
-                <strong>Órbita:</strong> {selected.orbit?.class} —{" "}
+                <strong>Orbit:</strong> {selected.orbit?.class} —{" "}
                 {selected.orbit?.altitudeKm} km
               </p>
-              <a href={selected.contact} className="contact-link">
-                Contactar proveedor
-              </a>
+              <div className="flex gap-8 w-full justify-between">
+                <a href={selected.contact} className="contact-link" >
+                  Contact Provider
+                </a>
+                <a href={selected.contact} className="contact-link" >
+                  Secure
+                </a>
+              </div>
             </div>
           }
           onClose={() => setSelected(null)}

@@ -15,7 +15,7 @@ export default function Layout() {
           <Link to="/">Home</Link>
           <Link to="/marketplace">Marketplace</Link>
           <Link to="/collision">Collision Monitor</Link>
-          <Link to="/insurance">Insurance Panel</Link>
+          <Link to="/insurance">Insurance</Link>
         </nav>
       </header>
 
@@ -26,7 +26,7 @@ export default function Layout() {
 
       {/* 🧑‍🚀 Footer */}
       <footer>
-        <p><FaUserAstronaut /> Proyecto desarrollado para NASA Space Apps Challenge</p>
+        <p><FaUserAstronaut /> Developed project for NASA Space Apps Challenge</p>
       </footer>
     </div>
   );

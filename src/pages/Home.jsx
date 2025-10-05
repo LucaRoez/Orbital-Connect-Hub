@@ -21,44 +21,28 @@ return (
           <div className="kpi-container">
             <div className="kpi-card">
               <FaSatellite className="kpi-icon" />
-              <span>Satélites Activos</span>
+              <span>Active Satellites</span>
               <strong>7.800</strong>
             </div>
             <div className="kpi-card">
               <FaRecycle className="kpi-icon" />
-              <span>Basura Orbital</span>
+              <span>Orbital Debris</span>
               <strong>36.000</strong>
             </div>
           </div>
           <div className="kpi-container">
             <div className="kpi-card">
               <FaExclamationTriangle className="kpi-icon" />
-              <span>Alertas Activas</span>
+              <span>Active Alerts</span>
               <strong>12</strong>
             </div>
             <div className="kpi-card">
               <FaChartLine className="kpi-icon" />
-              <span>Oportunidades</span>
+              <span>Opportunities</span>
               <strong>8</strong>
             </div>
           </div>
           <div className="alerts-panel">
-            <div className="alert-card danger">
-              <FaExclamationTriangle className="alert-icon" />
-              <p>Colisión detectada en órbita 600km (&lt;48h)</p>
-            </div>
-            <div className="alert-card warning">
-              <FaRocket className="alert-icon" />
-              <p>Congestión en órbita 700km (1200 objetos)</p>
-            </div>
-            <div className="alert-card info">
-              <FaRecycle className="alert-icon" />
-              <p>Nueva normativa de mitigación (ESA Copernicus)</p>
-            </div>
-            <div className="alert-card success">
-              <FaChartLine className="alert-icon" />
-              <p>Oportunidad: datos Sentinel disponibles</p>
-            </div>
             <div className="alert-panel">
               <AlertsPanel />
             </div>
