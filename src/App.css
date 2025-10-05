@@ -651,6 +651,7 @@ footer {
 }
 
 .collision-panel {
+  margin-top: 5%;
   background: rgba(10, 15, 25, 0.6);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(0, 255, 255, 0.2);
