@@ -158,6 +158,19 @@ function CollisionGlobe() {
    Página principal (Home)
 ====================================== */
 export default function Home() {
+  // resizer desde three.js al DOM
+  const globeRef = useRef(null);
+  useEffect(() => {
+    if (!globeRef.current || !window.ResizeObserver) return;
+
+    const ro = new ResizeObserver(() => {
+      window.dispatchEvent(new Event('resize'));
+    });
+
+    ro.observe(globeRef.current);
+    return () => ro.disconnect();
+  }, []);
+
   const [data, setData] = useState([]);
 
   const lights = useMemo(
@@ -234,8 +247,6 @@ export default function Home() {
                 <span>Basura Orbital</span>
                 <strong>{totals.fragments}</strong>
               </div>
-            </div>
-            <div className="kpi-container">
               <div className="kpi-card">
                 <FaExclamationTriangle className="kpi-icon" />
                 <span>Alertas Activas</span>

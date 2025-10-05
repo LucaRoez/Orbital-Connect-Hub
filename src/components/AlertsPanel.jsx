@@ -23,16 +23,16 @@ export default function AlertsPanel() {
     }, []);
 
   return (
-    <div className="alerts-panel">
-      {alerts.map((a) => (
-        <ul key={a.id} className={`alert-card ${a.severity === 'alta' ? 'danger' : 'media' ? 'warning' :
-          'baja' ? 'success' : 'info'
-        }`}>
-          <li key={a.id} className="alert-icon">
-            {a.title}
-          </li>
-        </ul>
-      ))}
+    <div className="alert-container">
+      <ul className="alert-card">
+        {alerts.map((a) => (
+            <li key={a.id} className={`alert-item ${a.severity === 'alta' ? 'danger' : 'media' ? 'warning' :
+              'baja' ? 'success' : 'info'
+            }`}>
+              {a.title}
+            </li>
+        ))}
+      </ul>
     </div>
   );
 }
