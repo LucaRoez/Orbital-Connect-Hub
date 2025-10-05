@@ -3,9 +3,13 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import "./Marketplace.css";
 import Modal from "../components/Modal";
+import { Link, useLocation } from "react-router-dom";
 
 
 export default function Marketplace() {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const openSatelite = searchParams.get("openSatelite"); 
   const [offers, setOffers] = useState([]);
   const [selected, setSelected] = useState(null);
   const [parallax, setParallax] = useState({ x: 0, y: 0 });
@@ -15,6 +19,12 @@ export default function Marketplace() {
       const querySnapshot = await getDocs(collection(db, "offers"));
       const offersList = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setOffers(offersList);
+      if(openSatelite == 1){
+        setTimeout(() => {
+          const randomIndex = Math.floor(Math.random() * offersList.length);
+          setSelected(offersList[randomIndex]);
+        }, 1000)
+      }
     }
     fetchOffers();
   }, []);
@@ -45,7 +55,7 @@ export default function Marketplace() {
               <p className="price">💲 {offer.price?.toLocaleString()} USD</p>
               {offer.ecoCredentials && <span className="green-seal">♻️ Eco</span>}
             </div>
-            <button className="offer-btn" onClick={() => setSelected(offer)}>
+            <button className="offer-btn" onClick={() => {setSelected(offer); console.log(offer)}}>
               More Info
             </button>
           </div>
@@ -86,9 +96,9 @@ export default function Marketplace() {
                 <a href={selected.contact} className="contact-link" >
                   Contact Provider
                 </a>
-                <a href={selected.contact} className="contact-link" >
-                  Secure
-                </a>
+                <p>
+                  <Link to={`/insurance?openInsurance=1`}>Secure</Link>
+                </p>
               </div>
             </div>
           }

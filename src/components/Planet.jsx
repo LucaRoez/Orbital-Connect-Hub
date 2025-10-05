@@ -7,6 +7,7 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import axios from "axios";
 import Modal from "./Modal";
+import { Link } from "react-router-dom";
 
 /* ===========================
    lat/lon -> vector 3D
@@ -319,7 +320,7 @@ export default function Planet() {
                   />
 
                   <p>
-                    <a href={selectedOpp.contact}>View Satellite  </a>
+                    <Link to={`/marketplace?openSatelite=1`}>View Satellite</Link>
                   </p>
                 </div>
                 <div className="no-margin-p descripcion-oportunity">
