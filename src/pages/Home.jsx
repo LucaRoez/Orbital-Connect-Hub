@@ -41,7 +41,6 @@ return (
                 <strong>8</strong>
               </div>
             </div>
-            <h3>🚨 Alertas Orbitales</h3>
             <div className="alerts-panel">
               <div className="alert-card danger">
                 <FaExclamationTriangle className="alert-icon" />

@@ -8,7 +8,9 @@ export default function Layout() {
     <div className="app-container">
       {/* 🌌 Header */}
       <header className="header">
-        <h1><FaRocket /> ORBITAL CONNECT HUB</h1>
+        <img src="img/orbitalCeleste.png" className="logo-header" style={{
+          height: '60px',
+        }} />
         <nav>
           <Link to="/">Home</Link>
           <Link to="/marketplace">Marketplace</Link>
