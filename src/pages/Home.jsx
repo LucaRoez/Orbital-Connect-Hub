@@ -215,8 +215,8 @@ export default function Home() {
 
   return (
     <>
-      <section className="contenido">
-        <div className="flex w-full justify-evenly">
+      <section className="Home-container">
+        <div className="Home-content flex w-full justify-evenly">
           <div className="planet-wrapper w-1/2 ml-4">
             <Planet />
             <p className="planet-label">LEO Live Monitor</p>
@@ -255,28 +255,27 @@ export default function Home() {
       </section>
 
       {/* === Globe & Collision Monitor === */}
-      <div className="globeContainer">
-        <Canvas
-          camera={{ position: [0, 0, 9], fov: 40 }}
-          style={{
-            width: "100%",
-            height: "100%",
-            background: "transparent",
-            borderRadius: "50%",
-          }}
-        >
-          {lights}
-          <CollisionGlobe />
-          <OrbitControls
-            enablePan={false}
-            enableZoom={false}
-            autoRotate
-            autoRotateSpeed={0.25}
-          />
-        </Canvas>
-      </div>
-
       <div className="collision-container">
+        <div className="globeContainer">
+          <Canvas
+            camera={{ position: [0, 0, 9], fov: 40 }}
+            style={{
+              width: "100%",
+              background: "transparent",
+              borderRadius: "50%"
+            }}
+          >
+            {lights}
+            <CollisionGlobe />
+            <OrbitControls
+              enablePan={false}
+              enableZoom={false}
+              autoRotate
+              autoRotateSpeed={0.25}
+            />
+          </Canvas>
+        </div>
+
         <div className="collision-panel">
           <h3>⚙️ Collision Monitor</h3>
           <p>
