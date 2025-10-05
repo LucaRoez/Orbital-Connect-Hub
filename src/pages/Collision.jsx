@@ -1,250 +1,235 @@
-// src/pages/Collision.jsx
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+// src/pages/CollisionMonitor.jsx
+import React, { useRef, useEffect, useMemo, useState } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
+import "./collision.css";
 
-// === util: convierte “altitud LEO (km)” a radio del globo en escena ===
-// El globo tiene radio ~2.0. Mapear 500–1300 km a 2.05–2.45 da un buen look.
-function altitudeToRadius(km) {
-  const minKm = 500, maxKm = 1300;
-  const minR = 2.05, maxR = 2.45;
-  const t = Math.min(1, Math.max(0, (km - minKm) / (maxKm - minKm)));
-  return minR + t * (maxR - minR);
+/* ======================================
+   Util: Conversión Lat/Lon a Vector 3D
+====================================== */
+function latLonToVector3(lat, lon, radius) {
+  const phi = (90 - lat) * (Math.PI / 180);
+  const theta = (lon + 180) * (Math.PI / 180);
+  return new THREE.Vector3(
+    -(radius * Math.sin(phi) * Math.cos(theta)),
+    radius * Math.cos(phi),
+    radius * Math.sin(phi) * Math.sin(theta)
+  );
 }
 
-// === Globo texturizado ===
-function Globe() {
-  const tex = useLoader(THREE.TextureLoader, "/img/earth_day.jpg");
-  const gRef = useRef();
-  useFrame((_, delta) => {
-    if (gRef.current) gRef.current.rotation.y += delta * 0.04;
+/* ======================================
+   Componente Satélite / Fragmento
+====================================== */
+function Satellite({ position, color }) {
+  const ref = useRef();
+  const axis = useMemo(() => new THREE.Vector3(0, 1, 0), []);
+  const speed = useMemo(() => 0.001 + Math.random() * 0.0015, []);
+
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.position.applyAxisAngle(axis, speed);
+      ref.current.rotation.y += 0.002;
+    }
   });
+
   return (
-    <group ref={gRef}>
+    <mesh ref={ref} position={position}>
+      <sphereGeometry args={[0.03, 8, 8]} />
+      <meshStandardMaterial
+        color={color}
+        emissive={color}
+        emissiveIntensity={0.5}
+      />
+    </mesh>
+  );
+}
+
+/* ======================================
+   Globo con atmósfera, debris y flashes
+====================================== */
+function CollisionGlobe() {
+  const group = useRef();
+  const texture = useMemo(
+    () => new THREE.TextureLoader().load("/img/earth_day.jpg"),
+    []
+  );
+
+  // Generar mezcla de satélites y fragmentos
+  const satellites = useMemo(() => {
+    const satArray = [];
+    const totalObjects = 400;
+    for (let i = 0; i < totalObjects; i++) {
+      const lat = Math.random() * 180 - 90;
+      const lon = Math.random() * 360 - 180;
+      const radius = 3 + Math.random() * 0.35;
+      const isDebris = Math.random() > 0.75;
+      const color = isDebris ? "#ff4444" : "#33c9ff";
+      satArray.push({
+        position: latLonToVector3(lat, lon, radius),
+        color,
+      });
+    }
+    return satArray;
+  }, []);
+
+  // Efectos de colisión simulados
+  const [flashes, setFlashes] = useState([]);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setFlashes((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          pos: latLonToVector3(
+            Math.random() * 180 - 90,
+            Math.random() * 360 - 180,
+            3.1
+          ),
+        },
+      ]);
+      setTimeout(() => {
+        setFlashes((prev) => prev.slice(1));
+      }, 1200);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useFrame((_, delta) => {
+    if (group.current) group.current.rotation.y += delta * 0.015;
+  });
+
+  return (
+    <group ref={group}>
+      {/* Tierra base */}
       <mesh>
-        <sphereGeometry args={[2, 128, 128]} />
-        <meshStandardMaterial map={tex} roughness={1} metalness={0} />
+        <sphereGeometry args={[3, 128, 128]} />
+        <meshStandardMaterial map={texture} roughness={1} metalness={0} />
       </mesh>
-      {/* atmósfera suave */}
+
+      {/* Halo atmosférico */}
       <mesh>
-        <sphereGeometry args={[2.05, 128, 128]} />
+        <sphereGeometry args={[3.12, 128, 128]} />
         <meshBasicMaterial
-          color="#21e6c1"
+          color={"#1ea7ff"}
           transparent
           opacity={0.06}
           blending={THREE.AdditiveBlending}
-          depthWrite={false}
         />
       </mesh>
-    </group>
-  );
-}
 
-// === Halos de congestión (zonas de riesgo) ===
-function RiskHalos({ zones }) {
-  // animación suave de pulso
-  const refs = useRef([]);
-  useFrame(({ clock }) => {
-    const t = clock.getElapsedTime();
-    refs.current.forEach((m, i) => {
-      if (!m) return;
-      const pulse = 1 + Math.sin(t * 1.4 + i) * 0.03;
-      m.scale.setScalar(pulse);
-      m.material.opacity = 0.10 + (Math.sin(t * 2 + i) + 1) * 0.08;
-    });
-  });
+      {/* Bandas orbitales */}
+      <mesh rotation={[Math.PI / 2, 0, 0]}>
+        <ringGeometry args={[3.3, 3.35, 128]} />
+        <meshBasicMaterial color="#ffaa00" transparent opacity={0.15} />
+      </mesh>
+      <mesh rotation={[Math.PI / 2, 0, Math.PI / 4]}>
+        <ringGeometry args={[3.5, 3.55, 128]} />
+        <meshBasicMaterial color="#ff5555" transparent opacity={0.12} />
+      </mesh>
 
-  return (
-    <group>
-      {zones.map((z, i) => {
-        const radius = altitudeToRadius(z.altitude);
-        const color =
-          z.severity === "Alta" ? "#ff4444" : z.severity === "Media" ? "#ffbb33" : "#44ccff";
-        return (
-          <mesh
-            key={i}
-            ref={(el) => (refs.current[i] = el)}
-          >
-            <sphereGeometry args={[radius, 64, 64]} />
-            <meshBasicMaterial
-              color={color}
-              transparent
-              opacity={0.18}
-              blending={THREE.AdditiveBlending}
-              depthWrite={false}
-              side={THREE.BackSide}
-            />
-          </mesh>
-        );
-      })}
-    </group>
-  );
-}
+      {/* Satélites y fragmentos */}
+      {satellites.map((s, i) => (
+        <Satellite key={i} position={s.position} color={s.color} />
+      ))}
 
-// === Flota orbitando (satélites + fragmentos) ===
-function Swarm({ count, color, radiusRange, speedRange, chaotic = false, size = 0.03 }) {
-  // Creamos parámetros de órbita para cada objeto
-  const items = useMemo(() => {
-    const arr = [];
-    for (let i = 0; i < count; i++) {
-      const radius =
-        radiusRange[0] + Math.random() * (radiusRange[1] - radiusRange[0]);
-      const speed =
-        speedRange[0] + Math.random() * (speedRange[1] - speedRange[0]);
-      const incl = Math.random() * Math.PI; // 0..180°
-      const phase = Math.random() * Math.PI * 2;
-      const wobble = chaotic ? (0.02 + Math.random() * 0.05) : 0.0;
-      arr.push({ radius, speed, incl, phase, wobble });
-    }
-    return arr;
-    // eslint-disable-next-line
-  }, [count]);
-
-  const meshesRef = useRef([]);
-
-  useFrame((_, delta) => {
-    meshesRef.current.forEach((m, i) => {
-      const it = items[i];
-      if (!m) return;
-      it.phase += it.speed * delta;
-      // órbita: ángulo principal (phase) y leve precesión/inclinación
-      const a = it.phase;
-      const inc = it.incl + (it.wobble ? Math.sin(a * 1.7) * it.wobble : 0);
-      const x = it.radius * Math.sin(inc) * Math.cos(a);
-      const y = it.radius * Math.cos(inc);
-      const z = it.radius * Math.sin(inc) * Math.sin(a);
-      m.position.set(x, y, z);
-    });
-  });
-
-  return (
-    <group>
-      {items.map((_, i) => (
-        <mesh key={i} ref={(el) => (meshesRef.current[i] = el)}>
-          <sphereGeometry args={[size, 6, 6]} />
-          <meshBasicMaterial color={color} />
+      {/* Flashes de colisión */}
+      {flashes.map((f) => (
+        <mesh key={f.id} position={f.pos}>
+          <sphereGeometry args={[0.08, 16, 16]} />
+          <meshBasicMaterial color="#ffff66" transparent opacity={0.8} />
         </mesh>
       ))}
     </group>
   );
 }
 
-// === Escena 3D completa ===
-function CollisionScene({ zones }) {
-  // luces
+/* ======================================
+   Collision Monitor principal
+====================================== */
+export default function CollisionMonitor() {
   const lights = useMemo(
     () => (
       <>
         <ambientLight intensity={0.7} />
-        <directionalLight position={[5, 5, 5]} intensity={1.2} />
+        <directionalLight position={[5, 5, 5]} intensity={1.1} />
         <pointLight position={[-6, -6, 2]} intensity={0.8} />
       </>
     ),
     []
   );
 
+  const mockData = {
+    fragments: 380,
+    activeSatellites: 42,
+    density: 0.023,
+  };
+
   return (
-    <Canvas camera={{ position: [0, 0, 5.5], fov: 45 }}>
-      {lights}
-      <Globe />
+    <div className="collision-container">
+      {/* PANEL DE INFORMACIÓN */}
+      <div className="collision-panel">
+        <h3>⚙️ Collision Monitor</h3>
+        <p>
+          Total de fragmentos: <strong>{mockData.fragments}</strong>
+        </p>
+        <p>
+          Satélites activos: <strong>{mockData.activeSatellites}</strong>
+        </p>
+        <p>
+          Promedio densidad LEO:{" "}
+          <strong>{mockData.density} objetos/km³</strong>
+        </p>
 
-      {/* Halos de riesgo */}
-      <RiskHalos zones={zones} />
-
-      {/* Satélites (azules) — órbitas más “limpias” */}
-      <Swarm
-        count={48}
-        color="#4cc9ff"
-        radiusRange={[altitudeToRadius(520), altitudeToRadius(900)]}
-        speedRange={[0.3, 0.6]}
-        chaotic={false}
-        size={0.035}
-      />
-
-      {/* Fragmentos / desechos (rojo/naranja) — órbitas más caóticas */}
-      <Swarm
-        count={120}
-        color="#ff5e57"
-        radiusRange={[altitudeToRadius(650), altitudeToRadius(1250)]}
-        speedRange={[0.6, 1.1]}
-        chaotic={true}
-        size={0.028}
-      />
-
-      <OrbitControls enablePan={false} enableZoom={false} />
-    </Canvas>
-  );
-}
-
-// === Panel de métricas lateral ===
-function SidePanel({ data }) {
-  return (
-    <aside className="collision-panel">
-      <h3 className="cp-title">⚙️ Collision Monitor</h3>
-      <div className="cp-kpi">
-        <span>Total de fragmentos:</span>
-        <strong>{data.fragments?.toLocaleString() ?? "—"}</strong>
-      </div>
-      <div className="cp-kpi">
-        <span>Satélites activos:</span>
-        <strong>{data.satellites ?? "—"}</strong>
-      </div>
-      <div className="cp-kpi">
-        <span>Promedio densidad LEO:</span>
-        <strong>
-          {data.risk_zones?.[0]?.density?.toFixed(3) ?? "—"} objetos/km³
-        </strong>
-      </div>
-
-      <div className="cp-zones">
         <h4>Zonas de riesgo</h4>
-        {data.risk_zones?.map((z, i) => (
-          <div key={i} className={`cp-zone cp-${z.severity?.toLowerCase()}`}>
-            <div>
-              <strong>{z.severity}</strong> — {z.altitude} km
-            </div>
-            <small>densidad: {z.density} obj/km³</small>
-          </div>
-        ))}
-      </div>
-
-      <div className="cp-alerts">
-        <h4>Alertas</h4>
         <ul>
-          {data.alerts?.map((a, i) => (
-            <li key={i}>{a}</li>
-          ))}
+          <li>Alta — 750 km — 0.023 obj/km³</li>
+          <li>Media — 900 km — 0.015 obj/km³</li>
+          <li>Baja — 1200 km — 0.006 obj/km³</li>
         </ul>
+
+        <div className="alert red">
+          ⚠️ Congestión detectada en órbita 700 km
+        </div>
+        <div className="alert yellow">
+          🛰 Satélite fuera de trayectoria nominal
+        </div>
+        <div className="alert blue">
+          🌌 Actividad elevada en corredor polar
+        </div>
+
+        <hr style={{ margin: "12px 0", opacity: 0.2 }} />
+
+        {/* LEYENDA VISUAL */}
+        <div style={{ fontSize: "0.85rem", lineHeight: "1.4em" }}>
+          <p>🔵 Satélite activo</p>
+          <p>🔴 Fragmento de desecho orbital</p>
+          <p>🟡 Zona de congestión orbital</p>
+          <p>✨ Colisión simulada detectada</p>
+        </div>
       </div>
-    </aside>
-  );
-}
 
-// === Página principal ===
-export default function Collision() {
-  const [data, setData] = useState({});
-
-  useEffect(() => {
-    let mounted = true;
-    (async () => {
-      try {
-        const res = await fetch("/data/collision_data.json");
-        const json = await res.json();
-        if (mounted) setData(json);
-      } catch (e) {
-        console.error("collision_data.json error:", e);
-      }
-    })();
-    return () => (mounted = false);
-  }, []);
-
-  return (
-    <div className="collision-page">
-      <div className="collision-canvas">
-        <CollisionScene zones={data.risk_zones ?? []} />
+      {/* GLOBO 3D */}
+      <div className="globeContainer">
+        <Canvas
+          camera={{ position: [0, 0, 9], fov: 40 }}
+          style={{
+            width: "100%",
+            height: "100%",
+            background: "transparent",
+            borderRadius: "50%",
+          }}
+        >
+          {lights}
+          <CollisionGlobe />
+          <OrbitControls
+            enablePan={false}
+            enableZoom={false}
+            autoRotate
+            autoRotateSpeed={0.25}
+          />
+        </Canvas>
       </div>
-      <SidePanel data={data} />
     </div>
   );
 }
