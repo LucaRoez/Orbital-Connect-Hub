@@ -1,14 +1,8 @@
-<<<<<<< Updated upstream
-// src/pages/CollisionMonitor.jsx
-import React, { useRef, useEffect, useMemo, useState } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-=======
 // src/pages/Collision.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
->>>>>>> Stashed changes
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import "./collision.css";
@@ -195,29 +189,11 @@ export default function CollisionMonitor() {
           <li>Media — 900 km — 0.015 obj/km³</li>
           <li>Baja — 1200 km — 0.006 obj/km³</li>
         </ul>
-
-<<<<<<< Updated upstream
-        <div className="alert red">
-          ⚠️ Congestión detectada en órbita 700 km
-        </div>
-        <div className="alert yellow">
-          🛰 Satélite fuera de trayectoria nominal
-        </div>
-        <div className="alert blue">
-          🌌 Actividad elevada en corredor polar
-        </div>
-
-        <hr style={{ margin: "12px 0", opacity: 0.2 }} />
-
-        {/* LEYENDA VISUAL */}
-        <div style={{ fontSize: "0.85rem", lineHeight: "1.4em" }}>
-          <p>🔵 Satélite activo</p>
-          <p>🔴 Fragmento de desecho orbital</p>
-          <p>🟡 Zona de congestión orbital</p>
-          <p>✨ Colisión simulada detectada</p>
-        </div>
       </div>
-=======
+    </div>
+  );
+}
+  
 // === Página principal ===
 export default function Collision() {
   const [data, setData] = useState({});
@@ -242,10 +218,10 @@ export default function Collision() {
       mounted = false;
     };
   }, []);
->>>>>>> Stashed changes
 
-      {/* GLOBO 3D */}
-      <div className="globeContainer">
+    return (
+    <>  
+    <div className="globeContainer">
         <Canvas
           camera={{ position: [0, 0, 9], fov: 40 }}
           style={{
@@ -263,8 +239,8 @@ export default function Collision() {
             autoRotate
             autoRotateSpeed={0.25}
           />
-        </Canvas>
-      </div>
-    </div>
+          </Canvas>
+        </div>
+    </>
   );
 }
