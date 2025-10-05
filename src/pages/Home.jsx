@@ -3,7 +3,7 @@ import {
   FaRocket,
   FaRecycle,
   FaExclamationTriangle,
-  FaChartLine,
+  FaDollarSign,
   FaSatellite,
 } from "react-icons/fa";
 import Planet from "../components/Planet";
@@ -253,7 +253,7 @@ export default function Home() {
                 <strong>12</strong>
               </div>
               <div className="kpi-card">
-                <FaChartLine className="kpi-icon" />
+                <FaDollarSign className="kpi-icon" />
                 <span>Oportunidades</span>
                 <strong>8</strong>
               </div>

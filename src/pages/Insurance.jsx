@@ -166,13 +166,6 @@ export default function Insurance() {
                     </p>
                   </div>
                 </div>
-
-                {/* Botón de acción */}
-                <div className="flex gap-8 w-full justify-between">
-                  <p>
-                    <Link to={`/insurance?openInsurance=1`}>Secure</Link>
-                  </p>
-                </div>
               </div>
             }
           onClose={() => setSelected(null)}

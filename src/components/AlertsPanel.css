@@ -1,40 +1,73 @@
 /* === Alerts === */
-  .alert-container {
-  }
+.alert-container {
+}
 
-  .alert-card {
-    display: flex;
-    align-items: center;
-    background: rgba(0,0,0,0.6);
-    border-radius: 10px;
-    padding: 0.8rem;
-    gap: 0.8rem;
-    border-left: 4px solid;
-  }
+.alert-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg,
+    rgba(10, 20, 40, 0.85),
+    rgba(0, 10, 25, 0.7));
+  border: 1px solid rgba(100, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+  color: #dffbff;
+  transition: all 0.25s ease;
+}
+
+.alert-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 10% 100%,
+    rgba(0, 255, 255, 0.1),
+    transparent 60%);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.alert-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
+}
+
+/* Alertas Individuales */
+.alert-item {
+  font-family: "Orbitron", sans-serif;
+  padding: 0.5rem;
+  font-size: 1.1em;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.6);
+  flex-shrink: 0;
+}
   
-  .alert-card li {
-    list-style-type: none;
-    margin: 0;
-  }
+.alert-card li {
+  list-style-type: none;
+  color: #cfefff;
+  font-size: 0.95em;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+}
   
   /* Tipos de alerta */
-  .alert-item.danger {
-    border-color: var(--color-danger);
-  }
-  
-  .alert-item.warning {
-    border-color: var(--color-warning);
-  }
-  
-  .alert-item.info {
-    border-color: var(--color-info);
-  }
-  
-  .alert-item.success {
-    border-color: var(--color-success);
-  }
-  
-  .alert-icon {
-    font-family: "Orbitron", sans-serif;
-    font-size: 1em;
-  }
+.alert-item.danger {
+  border-left: 4px solid #ff4b4b;
+  box-shadow: 0 0 10px rgba(255, 75, 75, 0.2);
+}
+
+.alert-item.warning {
+  border-left: 4px solid #ffb347;
+  box-shadow: 0 0 10px rgba(255, 179, 71, 0.15);
+}
+
+.alert-item.info {
+  border-left: 4px solid #4ddcff;
+  box-shadow: 0 0 10px rgba(77, 220, 255, 0.2);
+}
+
+.alert-item.success {
+  border-left: 4px solid #57ff9a;
+  box-shadow: 0 0 10px rgba(87, 255, 154, 0.2);
+}

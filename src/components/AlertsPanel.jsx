@@ -26,8 +26,9 @@ export default function AlertsPanel() {
     <div className="alert-container">
       <ul className="alert-card">
         {alerts.map((a) => (
-            <li key={a.id} className={`alert-item ${a.severity === 'alta' ? 'danger' : 'media' ? 'warning' :
-              'baja' ? 'success' : 'info'
+            <li key={a.id} className={`alert-item ${a.severity === 'alta' ? 'danger' :
+              a.severity === 'media' ? 'warning' :
+              a.severity === 'baja' ? 'success' : 'info'
             }`}>
               {a.title}
             </li>
