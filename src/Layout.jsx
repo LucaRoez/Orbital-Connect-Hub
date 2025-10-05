@@ -14,7 +14,6 @@ export default function Layout() {
         <nav>
           <Link to="/">Home</Link>
           <Link to="/marketplace">Marketplace</Link>
-          <Link to="/collision">Collision Monitor</Link>
           <Link to="/insurance">Insurance</Link>
         </nav>
       </header>
