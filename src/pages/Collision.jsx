@@ -5,7 +5,7 @@ import { db } from "../firebaseConfig";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
-import "./collision.css";
+import "./Collision.css";
 
 /* ======================================
    Util: Conversión Lat/Lon a Vector 3D
@@ -149,7 +149,7 @@ function CollisionGlobe() {
 /* ======================================
    Collision Monitor principal
 ====================================== */
-export default function CollisionMonitor() {
+export function CollisionMonitor() {
   const lights = useMemo(
     () => (
       <>
