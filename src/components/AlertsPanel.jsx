@@ -1,21 +1,38 @@
-import React from "react";
-import alerts from "../data/alerts.json";
+import React, { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";import './AlertsPanel.css';
+
 
 export default function AlertsPanel() {
-  const color = (severity) =>
-    severity === "alta" ? "text-red-400" :
-    severity === "media" ? "text-yellow-400" : "text-cyan-300";
+  const [alerts, setAlert] = useState([]);
+  useEffect(() => {
+      async function fetchAlerts() {
+        try {
+          const querySnapshot = await getDocs(collection(db, "alerts"));
+          const data = querySnapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+          setAlert(data);
+        } catch (e) {
+          console.error("Error cargando Firestore:", e);
+        }
+      }
+  
+      fetchAlerts();
+    }, []);
 
   return (
-    <div className="bg-white/5 backdrop-blur-lg rounded-2xl p-5 border border-white/10 shadow-2xl w-full lg:w-80">
-      <h3 className="text-xl font-bold text-cyan-300 mb-4">🚨 Alertas Orbitales</h3>
-      <ul className="space-y-3">
-        {alerts.map((a) => (
-          <li key={a.id} className={`text-sm leading-snug ${color(a.severity)}`}>
+    <div className="alerts-panel">
+      {alerts.map((a) => (
+        <ul key={a.id} className={`alert-card ${a.severity === 'alta' ? 'danger' : 'media' ? 'warning' :
+          'baja' ? 'success' : 'info'
+        }`}>
+          <li key={a.id} className="alert-icon">
             {a.title}
           </li>
-        ))}
-      </ul>
+        </ul>
+      ))}
     </div>
   );
 }

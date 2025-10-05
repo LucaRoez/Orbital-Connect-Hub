@@ -1,0 +1,38 @@
+/* === Alerts === */
+  
+  .alert-card {
+    display: flex;
+    align-items: center;
+    background: rgba(0,0,0,0.6);
+    border-radius: 10px;
+    padding: 0.8rem;
+    gap: 0.8rem;
+    font-size: 0.85rem;
+    border-left: 4px solid;
+  }
+  
+  .alert-card li {
+    list-style-type: none;
+    margin: 0;
+  }
+  
+  /* Tipos de alerta */
+  .alert-card.danger {
+    border-color: var(--color-danger);
+  }
+  
+  .alert-card.warning {
+    border-color: var(--color-warning);
+  }
+  
+  .alert-card.info {
+    border-color: var(--color-info);
+  }
+  
+  .alert-card.success {
+    border-color: var(--color-success);
+  }
+  
+  .alert-icon {
+    font-size: 1.2rem;
+  }

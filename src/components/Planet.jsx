@@ -1,5 +1,7 @@
 // src/components/Planet.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
@@ -222,10 +224,20 @@ export default function Planet() {
 
   // CARGA de oportunidades desde /public/data/opportunities.json
   useEffect(() => {
-    fetch("/data/opportunities.json")
-      .then((r) => r.json())
-      .then((data) => setAllOpps(data))
-      .catch((e) => console.error("Error cargando opportunities.json:", e));
+    async function fetchOpportunities() {
+      try {
+        const querySnapshot = await getDocs(collection(db, "opportunities"));
+        const data = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setAllOpps(data);
+      } catch (e) {
+        console.error("Error cargando Firestore:", e);
+      }
+    }
+
+    fetchOpportunities();
   }, []);
 
   // Spawner de oportunidades: cada 2.5s agrega una nueva y se queda

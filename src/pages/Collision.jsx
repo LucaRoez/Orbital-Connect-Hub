@@ -1,6 +1,14 @@
+<<<<<<< Updated upstream
 // src/pages/CollisionMonitor.jsx
 import React, { useRef, useEffect, useMemo, useState } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
+=======
+// src/pages/Collision.jsx
+import React, { useEffect, useMemo, useRef, useState } from "react";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebaseConfig";
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
+>>>>>>> Stashed changes
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from "three";
 import "./collision.css";
@@ -188,6 +196,7 @@ export default function CollisionMonitor() {
           <li>Baja — 1200 km — 0.006 obj/km³</li>
         </ul>
 
+<<<<<<< Updated upstream
         <div className="alert red">
           ⚠️ Congestión detectada en órbita 700 km
         </div>
@@ -208,6 +217,32 @@ export default function CollisionMonitor() {
           <p>✨ Colisión simulada detectada</p>
         </div>
       </div>
+=======
+// === Página principal ===
+export default function Collision() {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    let mounted = true;
+
+    (async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "collision_data"));
+        const docs = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        if (mounted) setData(docs);
+      } catch (e) {
+        console.error("collision_data Firestore error:", e);
+      }
+    })();
+
+    return () => {
+      mounted = false;
+    };
+  }, []);
+>>>>>>> Stashed changes
 
       {/* GLOBO 3D */}
       <div className="globeContainer">

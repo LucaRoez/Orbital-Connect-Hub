@@ -1,7 +1,8 @@
 // src/pages/Home.jsx
-import React, { useEffect } from "react";
+import React from "react";
 import { FaRocket, FaRecycle, FaExclamationTriangle, FaChartLine, FaSatellite } from "react-icons/fa";
 import Planet from "../components/Planet";
+import AlertsPanel from "../components/AlertsPanel";
 
 export default function Home() {
   
@@ -58,6 +59,8 @@ return (
                 <FaChartLine className="alert-icon" />
                 <p>Oportunidad: datos Sentinel disponibles</p>
               </div>
+            <div className="alert-panel">
+              <AlertsPanel />
             </div>
           </div>
         </div>

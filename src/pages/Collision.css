@@ -92,3 +92,66 @@
     height: 500px;
   }
 }
+
+/* =========================
+   📱 Responsive
+========================= */
+
+/* Tablets medianas (hasta 1024px) */
+@media (max-width: 1024px) {
+  .collision-page {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .collision-canvas {
+    height: 480px;
+  }
+
+  .collision-panel {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+/* Móviles grandes (hasta 768px) */
+@media (max-width: 768px) {
+  .collision-page {
+    padding: 10px;
+  }
+
+  .collision-canvas {
+    height: 420px;
+  }
+
+  .collision-panel {
+    padding: 14px;
+    font-size: 0.95rem;
+  }
+
+  .cp-kpi {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+}
+
+/* Móviles chicos (hasta 480px) */
+@media (max-width: 480px) {
+  .collision-canvas {
+    height: 340px;
+  }
+
+  .collision-panel {
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .cp-title {
+    font-size: 1.1rem;
+  }
+
+  .cp-zone {
+    font-size: 0.9rem;
+  }
+}
