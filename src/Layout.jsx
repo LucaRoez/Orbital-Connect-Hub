@@ -25,11 +25,11 @@ export default function Layout() {
 
       {/* 🧑‍🚀 Footer */}
       <footer>
-        <p><FaUserAstronaut /> Developed project for NASA Space Apps Challenge</p>
-        <p>
-      Developed by the Orbital Connect Team for the
-      <strong>NASA Space Apps Challenge 2025</strong>.  
-      This is a non-commercial prototype created for educational and research purposes.
+        <p><FaUserAstronaut style={{ marginRight : ".5rem" }} />
+        
+      Developed by the Orbital Connect Team for the 
+      <strong> NASA Space Apps Challenge 2025</strong>.</p>  
+      <p>This is a non-commercial prototype created for educational and research purposes.
     </p>
    
 
