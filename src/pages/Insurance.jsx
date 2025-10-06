@@ -11,13 +11,13 @@ export default function Insurance() {
   const [insurance, setInsurance] = useState([
     {
       id: "basic",
-      type: "BÁSICO",
-      title: "Plan Orbital Básico",
-      subtitle: "Protección contra colisiones menores y fallos de subsistemas.",
+      type: "BASIC",
+      title: "Basic Orbital Plan",
+      subtitle: "Protection against minor collisions and subsystem failures.",
       features: [
-        "Reemplazo parcial de componentes",
-        "Soporte de telemetría 24/7",
-        "Asistencia en maniobras de emergencia"
+        "Partial replacement of components",
+        "24/7 telemetry support",
+        "Assistance in emergency maneuvers"
       ],
       price: "1,200",
       buttonText: "Hire",
