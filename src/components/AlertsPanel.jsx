@@ -15,7 +15,7 @@ export default function AlertsPanel() {
           }));
           setAlert(data);
         } catch (e) {
-          console.error("Error cargando Firestore:", e);
+          console.error("Error loading Firestore:", e);
         }
       }
   

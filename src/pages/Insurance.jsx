@@ -33,14 +33,14 @@ export default function Insurance() {
     },
     {
       id: "advanced",
-      type: "AVANZADO",
-      title: "Plan Avanzado — Sentinel",
-      subtitle: "Cobertura completa, análisis predictivo y mitigación de riesgos orbitales.",
+      type: "ADVANCED",
+      title: "Advanced Plan — Sentinel",
+      subtitle: "Comprehensive coverage, predictive analytics, and orbital risk mitigation.",
       features: [
-        "Reemplazo total ante pérdida de misión",
-        "Seguro de responsabilidad por daños a terceros",
-        "Servicio de remediación y rescate orbital",
-        "Monitorización con IA y alertas proactivas"
+        "Full replacement in case of mission failure",
+        "Third-party liability insurance",
+        "Orbital rescue and remediation service",
+        "AI monitoring and proactive alerts"
       ],
       price: "9,800",
       buttonText: "Hire",
@@ -58,12 +58,12 @@ export default function Insurance() {
     {
       id: "corp",
       type: "CORP",
-      title: "Plan Corporativo — Constellation",
-      subtitle: "Solución para flotas y constelaciones con SLAs y personalización avanzada.",
+      title: "Corporate Plan — Constellation",
+      subtitle: "Solution for fleets and constellations with SLAs and advanced customization.",
       features: [
-        "Política a medida para múltiples satélites",
-        "Descuentos por volumen y auditorías periódicas",
-        "Simulaciones de resiliencia y reporte regulatorio"
+        "Customized policy for multiple satellites",
+        "Volume discounts and periodic audits",
+        "Resilience simulations and regulatory reporting"
       ],
       price: "22,500",
       buttonText: "Hire",
@@ -121,7 +121,7 @@ export default function Insurance() {
             <div className="insurance-card-price">
               <span className="currency">USD</span>
               <span className="amount">{plan.price}</span>
-              <span className="period">/ año</span>
+              <span className="period">/ Year</span>
             </div>
             <p className="cursor-pointer" onClick={() => {setSelected(plan); console.log(plan)}}>
               Customize

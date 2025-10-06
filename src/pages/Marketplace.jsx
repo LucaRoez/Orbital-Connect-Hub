@@ -97,7 +97,7 @@ export default function Marketplace() {
                   Contact Provider
                 </a>
                 <p>
-                  <Link to={`/insurance?openInsurance=1`}>Secure</Link>
+                  <Link to={`/insurance?openInsurance=1`}>Policy coverage</Link>
                 </p>
               </div>
             </div>

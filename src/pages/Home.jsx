@@ -239,22 +239,22 @@ export default function Home() {
             <div className="kpi-container">
               <div className="kpi-card">
                 <FaSatellite className="kpi-icon" />
-                <span>Satélites Activos</span>
+                <span>Active Satellites</span>
                 <strong>{totals.satellites}</strong>
               </div>
               <div className="kpi-card">
                 <FaRecycle className="kpi-icon" />
-                <span>Basura Orbital</span>
+                <span>Orbital Debris</span>
                 <strong>{totals.fragments}</strong>
               </div>
               <div className="kpi-card">
                 <FaExclamationTriangle className="kpi-icon" />
-                <span>Alertas Activas</span>
+                <span>Active Alerts</span>
                 <strong>12</strong>
               </div>
               <div className="kpi-card">
                 <FaDollarSign className="kpi-icon" />
-                <span>Oportunidades</span>
+                <span>Opportunities</span>
                 <strong>8</strong>
               </div>
               <div className="alert-panel">
@@ -290,21 +290,21 @@ export default function Home() {
         <div className="collision-panel">
           <h3>⚙️ Collision Monitor</h3>
           <p>
-            Total de fragmentos: <strong>{totals.fragments}</strong>
+            Total fragments: <strong>{totals.fragments}</strong>
           </p>
           <p>
-            Satélites activos: <strong>{totals.satellites}</strong>
+            Active satellites: <strong>{totals.satellites}</strong>
           </p>
           <p>
-            Promedio densidad LEO:{" "}
-            <strong>{averageDensity.toFixed(3)} objetos/km³</strong>
+            Average density LEO:{" "}
+            <strong>{averageDensity.toFixed(3)} objects/km³</strong>
           </p>
 
-          <h4>Zonas de riesgo</h4>
+          <h4>Risk areas</h4>
           <ul>
-            <li>Alta — 750 km — 0.023 obj/km³</li>
-            <li>Media — 900 km — 0.015 obj/km³</li>
-            <li>Baja — 1200 km — 0.006 obj/km³</li>
+            <li>High — 750 km — 0.023 obj/km³</li>
+            <li>Average — 900 km — 0.015 obj/km³</li>
+            <li>Low — 1200 km — 0.006 obj/km³</li>
           </ul>
         </div>
       </div>

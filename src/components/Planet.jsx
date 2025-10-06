@@ -290,15 +290,15 @@ export default function Planet() {
             <div className="event-body">
               <h2>{selectedEvent.title}</h2>
               <p>
-                <strong>Fuente:</strong> {selectedEvent.source} |{" "}
-                <strong>Categoría:</strong> {selectedEvent.category}
+                <strong>Source:</strong> {selectedEvent.source} |{" "}
+                <strong>Category:</strong> {selectedEvent.category}
               </p>
             </div>
             <div className="event-actions">
               <a href={selectedEvent.link} target="_blank" rel="noreferrer">
-                Ver fuente oficial
+                See official source
               </a>
-              <button onClick={() => setSelectedEvent(null)}>Cerrar</button>
+              <button onClick={() => setSelectedEvent(null)}>Close</button>
             </div>
           </div>
         </div>
